@@ -8,21 +8,33 @@ TAREA 1 - MACHINE LEARNING
 - RIOS MEZA, JENNIFER SASKIA
 - VARGAS FLORES, JOHANNA ANTONELLA
 
-# Differences observed between OLS, Ridge, and Lasso
-- **OLS**: sin regularización; varianza alta si hay multicolinealidad. Coeficientes no se encogen a 0.
-- **Ridge (L2)**: encoge coeficientes; reduce varianza; **no** hace selección exacta (coeficientes rara vez son 0).
-- **Lasso (L1)**: puede poner coeficientes **exactamente en 0** (selección de variables); útil con muchas features y colinealidad.
-- Con **features polinomiales** (grado 2), el espacio crece y aparecen fuertes correlaciones → Ridge/Lasso evitan overfitting.
+Differences Observed between OLS, Ridge, and Lasso
+OLS (Ordinary Least Squares):
+Produce coeficientes exactos usando la solución cerrada. Funciona bien, pero es sensible a multicolinealidad y puede generar varianzas altas en los coeficientes cuando las variables están correlacionadas.
 
-# Effect of learning rate on gradient descent
-- **LR muy bajo**: convergencia lenta (muchas iteraciones para reducir el coste).
-- **LR moderado**: converge de forma estable y rápida.
-- **LR muy alto**: puede divergir u oscilar (coste no desciende de forma monótona).
+Ridge Regression:
+Aplica penalización L2. Reduce la magnitud de los coeficientes pero no los lleva exactamente a cero. Fue útil para estabilizar los resultados y controlar la varianza, mejorando la generalización.
 
-# How k-fold cross-validation influenced the choice of regularization strength
-- Con **KFold=5**, se evalúa el error medio en validación para cada α (λ).
-- **α óptimo** equilibra sesgo-varianza; típicamente mejora el **MSE de test** respecto a OLS, sobre todo con multicolinealidad.
-- En práctica, `RidgeCV` y `LassoCV` simplifican el proceso y evitan fugas de validación al hacer búsqueda y ajuste de forma integrada.
+Lasso Regression:
+Aplica penalización L1. Además de reducir la magnitud, puede hacer que algunos coeficientes se vuelvan exactamente cero, actuando como selección de variables. En los experimentos, Lasso simplificó el modelo eliminando predictores menos relevantes.
+
+Effect of Learning Rate on Gradient Descent
+Con lr = 0.001, la convergencia fue muy lenta: el error disminuyó pero requería muchas iteraciones.
+
+Con lr = 0.01, el aprendizaje fue más estable, con un balance entre velocidad y precisión.
+
+Con lr = 0.1, se alcanzó rápidamente un valor cercano al óptimo, convergiendo al mismo resultado que OLS de forma más eficiente.
+
+Aprendimos que una tasa de aprendizaje demasiado baja desperdicia cómputo, mientras que una muy alta podría causar inestabilidad. En este caso, 0.1 resultó ser la más efectiva.
+
+Influence of k-Fold Cross-Validation on Regularization Strength
+Usamos validación cruzada para comparar valores de α (λ) en Ridge y Lasso.
+
+El k-fold permitió observar cómo la regularización afectaba al error promedio en diferentes subconjuntos de datos.
+
+La elección final de regularización se basó en minimizar el error promedio de validación, evitando tanto el underfitting (regularización demasiado fuerte) como el overfitting (regularización muy débil).
+
+Esto permitió encontrar un equilibrio entre sesgo y varianza, garantizando un modelo más robusto en datos no vistos.
 
 
 
